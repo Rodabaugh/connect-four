@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="120"
+   height="120"
+   viewBox="0 0 120 120"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.1 (93de688d07, 2025-03-30)"
+   sodipodi:docname="rose.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="px"
+     inkscape:zoom="4"
+     inkscape:cx="67.25"
+     inkscape:cy="44.125"
+     inkscape:window-width="2548"
+     inkscape:window-height="1402"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:#6e6a86;fill-opacity:1"
+       id="path1"
+       sodipodi:type="arc"
+       sodipodi:cx="60"
+       sodipodi:cy="60"
+       sodipodi:rx="59.992279"
+       sodipodi:ry="60"
+       sodipodi:start="0"
+       sodipodi:end="6.2830935"
+       sodipodi:arc-type="slice"
+       d="M 119.99228,60 A 59.992279,60 0 0 1 60.001377,120 59.992279,60 0 0 1 0.00772101,60.002754 59.992279,60 0 0 1 59.995869,1.4223192e-7 59.992279,60 0 0 1 119.99228,59.994492 L 60,60 Z" />
+    <path
+       style="fill:#ebbcba;fill-opacity:1;stroke-width:0.9"
+       id="path1-3"
+       sodipodi:type="arc"
+       sodipodi:cx="60"
+       sodipodi:cy="60"
+       sodipodi:rx="53.99305"
+       sodipodi:ry="54"
+       sodipodi:start="0"
+       sodipodi:end="6.2830935"
+       sodipodi:arc-type="slice"
+       d="M 113.99305,60 A 53.99305,54 0 0 1 60.001239,114 53.99305,54 0 0 1 6.0069504,60.002479 53.99305,54 0 0 1 59.996282,6.0000001 53.99305,54 0 0 1 113.99305,59.995042 L 60,60 Z" />
+  </g>
+</svg>
