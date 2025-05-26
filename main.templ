@@ -1,5 +1,8 @@
 package main
 
+import (
+    "strconv"
+)
 
 css base() {
     background-color: #191724;
@@ -28,10 +31,10 @@ templ header(){
     </div>
 }
 
-templ draw_board(board *[][]int){
-    <div style="display: flex; flex-wrap: wrap; width: calc(7 * (104px + 4px)); justify-content: center; align-items: center;">
-    for _, row := range *board {
-		for _, cell := range row {
+templ DrawBoard(board *[][]int){
+    <div id="game-board" style="display: flex; flex-wrap: wrap; width: calc(7 * (104px + 4px)); justify-content: center; align-items: center;">
+    for row_id, row := range *board {
+		for cell_id, cell := range row {
             <div style="flex: 0 0 auto; width: 104px; height: 104px; margin: 0px; border: 2px solid #26233a; box-sizing: border-box; display: flex; justify-content: center; align-items: center;">
 			switch cell {
                 case 1:
@@ -39,7 +42,7 @@ templ draw_board(board *[][]int){
                 case 2:
                     <img src="static/pine.svg" width="100" height="100">
                 default:
-                    <img src="static/empty.svg" width="100" height="100">
+                    <img src="static/empty.svg" width="100" height="100" hx-post={"/move/" + strconv.Itoa(row_id) + "/" + strconv.Itoa(cell_id) } hx-target="#game-board">
             }
             </div>
 		}
@@ -56,7 +59,7 @@ templ MainPage(board *[][]int){
             <center>@header()</center>
             <br>
             <center>
-                @draw_board(board)
+                @DrawBoard(board)
             </center>
         </body>
     </html>

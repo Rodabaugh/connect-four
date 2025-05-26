@@ -6,20 +6,29 @@ import (
 	"time"
 )
 
+type gameState struct {
+	rows          int64
+	cols          int64
+	board         [][]int
+	currentPlayer int
+}
+
 func main() {
 	mux := http.NewServeMux()
 
-	rows := 6
-	cols := 7
-
-	board := make([][]int, rows)
-	for i := range board {
-		board[i] = make([]int, cols)
+	gs := gameState{
+		rows:          6,
+		cols:          7,
+		currentPlayer: 1,
 	}
 
+	gs.initBoard()
+
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		MainPage(&board).Render(r.Context(), w)
+		MainPage(&gs.board).Render(r.Context(), w)
 	})
+
+	mux.HandleFunc("POST /move/{row}/{col}", gs.makeMove)
 
 	fs := http.FileServer(http.Dir("static"))
 	mux.Handle("/static/", http.StripPrefix("/static/", fs))
