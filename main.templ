@@ -57,7 +57,11 @@ templ DrawBoard(board *[][]int, gameOver bool){
 templ GameOver(board *[][]int, winner int){
     @DrawBoard(board, true)
     <div>
-        <h2>Player {strconv.Itoa(winner)} wins!</h2>
+        if winner == 0{
+            <h2>It's a Draw!</h2>
+        } else {
+            <h2>Player {strconv.Itoa(winner)} wins!</h2>
+        }
         <button hx-post={"/reset"} hx-target="#game-board">Reset</button>
     </div>
 }

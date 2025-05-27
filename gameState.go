@@ -47,6 +47,11 @@ func (gs *gameState) makeMove(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if gs.boardFull() {
+		GameOver(&gs.board, 0).Render(r.Context(), w)
+		return
+	}
+
 	if gs.currentPlayer == 1 {
 		gs.currentPlayer = 2
 	} else {
@@ -91,4 +96,15 @@ func (gs *gameState) checkWin() bool {
 		}
 	}
 	return false
+}
+
+func (gs *gameState) boardFull() bool {
+	for _, row := range gs.board {
+		for _, cell := range row {
+			if cell == 0 {
+				return false
+			}
+		}
+	}
+	return true
 }
