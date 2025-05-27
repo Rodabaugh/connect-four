@@ -19,28 +19,30 @@ func (gs *gameState) reset(w http.ResponseWriter, r *http.Request) {
 }
 
 func (gs *gameState) makeMove(w http.ResponseWriter, r *http.Request) {
-	row, err := strconv.ParseInt(r.PathValue("row"), 10, 0)
-	if err != nil {
-		respondWithError(w, http.StatusBadRequest, "Invalid Row", err)
-	}
 	col, err := strconv.ParseInt(r.PathValue("col"), 10, 0)
 	if err != nil {
 		respondWithError(w, http.StatusBadRequest, "Invalid Col", err)
+		return
 	}
 
-	if row > gs.rows || row < 0 {
-		respondWithError(w, http.StatusBadRequest, "Invalid Row", nil)
-	}
-
-	if row > gs.cols || col < 0 {
+	if col > gs.cols || col < 0 {
 		respondWithError(w, http.StatusBadRequest, "Invalid Col", nil)
+		return
 	}
 
-	if gs.board[row][col] == 1 || gs.board[row][col] == 2 {
-		respondWithError(w, http.StatusBadRequest, "Invalid Move", nil)
+	valid := false
+	for row := len(gs.board) - 1; row >= 0; row-- {
+		if gs.board[row][col] != 1 && gs.board[row][col] != 2 {
+			gs.board[row][col] = gs.currentPlayer
+			valid = true
+			break
+		}
 	}
 
-	gs.board[row][col] = gs.currentPlayer
+	if !valid {
+		respondWithError(w, http.StatusBadRequest, "Invalid Col", nil)
+		return
+	}
 
 	if gs.checkWin() {
 		GameOver(&gs.board, gs.currentPlayer).Render(r.Context(), w)

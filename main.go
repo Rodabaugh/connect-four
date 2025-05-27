@@ -28,7 +28,7 @@ func main() {
 		MainPage(&gs.board).Render(r.Context(), w)
 	})
 
-	mux.HandleFunc("POST /move/{row}/{col}", gs.makeMove)
+	mux.HandleFunc("POST /move/{col}", gs.makeMove)
 	mux.HandleFunc("POST /reset", gs.reset)
 
 	fs := http.FileServer(http.Dir("static"))

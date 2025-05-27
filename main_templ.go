@@ -113,8 +113,8 @@ func DrawBoard(board *[][]int, gameOver bool) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		for row_id, row := range *board {
-			for cell_id, cell := range row {
+		for _, row := range *board {
+			for col, cell := range row {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div style=\"flex: 0 0 auto; width: 104px; height: 104px; margin: 0px; border: 2px solid #26233a; box-sizing: border-box; display: flex; justify-content: center; align-items: center;\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -142,9 +142,9 @@ func DrawBoard(board *[][]int, gameOver bool) templ.Component {
 							return templ_7745c5c3_Err
 						}
 						var templ_7745c5c3_Var4 string
-						templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs("/move/" + strconv.Itoa(row_id) + "/" + strconv.Itoa(cell_id))
+						templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs("/move/" + strconv.Itoa(col))
 						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `main.templ`, Line: 48, Col: 147}
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `main.templ`, Line: 48, Col: 114}
 						}
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 						if templ_7745c5c3_Err != nil {
