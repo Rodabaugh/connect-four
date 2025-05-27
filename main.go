@@ -3,7 +3,10 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 	"time"
+
+	"github.com/joho/godotenv"
 )
 
 type gameState struct {
@@ -16,6 +19,18 @@ type gameState struct {
 }
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("Using enviroment variables.")
+	} else {
+		log.Println("Loaded .env file.")
+	}
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
 	mux := http.NewServeMux()
 
 	gs := gameState{
@@ -42,12 +57,12 @@ func main() {
 	mux.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	server := &http.Server{
-		Addr:         ":8080",
+		Addr:         ":" + port,
 		Handler:      mux,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}
 
-	log.Printf("Starting Server on port 8080")
+	log.Printf("Starting connect-four on port: %s\n", port)
 	log.Fatal(server.ListenAndServe())
 }
