@@ -26,8 +26,8 @@ templ head(){
 
 templ header(){
     <div style="line-height: .2;">
-        <h1 style="color:#f6c177">Connect Four</h1>
-        <h4 style="color:#ebbcba">ROSE PINE!</h4>
+        <h1 style="color:#ebbcba">Connect Four</h1>
+        <h4 style="color:#31748f">Get four in a row!</h4>
     </div>
 }
 
@@ -58,12 +58,41 @@ templ GameOver(board *[][]int, winner int){
     @DrawBoard(board, true)
     <div>
         if winner == 0{
-            <h2>It's a Draw!</h2>
+            <h2 style="color:#eb6f92">It's a Draw!</h2>
         } else {
-            <h2>Player {strconv.Itoa(winner)} wins!</h2>
+            <h2 style="color:#f6c177">Player {strconv.Itoa(winner)} wins!</h2>
         }
         <button hx-post={"/reset"} hx-target="#game-board">Reset</button>
     </div>
+}
+
+templ webSocket(){
+    <script type="text/javascript">
+    htmx.ajax('GET', '/get-refresh', {target: '#game-board', swap: 'innerHTML'});
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const ws = new WebSocket('ws://' + window.location.host + '/ws');
+
+        ws.onopen = function() {
+            console.log('WebSocket connection opened');
+        };
+
+        ws.onmessage = function(event) {
+            if (event.data === 'get-refresh') {
+                console.log('Received board update notification, triggering Htmx refresh');
+                htmx.ajax('GET', '/get-refresh', {target: '#game-board', swap: 'innerHTML'});
+            }
+        };
+
+        ws.onclose = function() {
+            console.log('WebSocket connection closed');
+        };
+
+        ws.onerror = function(error) {
+            console.error('WebSocket error:', error);
+        };
+    });
+    </script>
 }
 
 templ MainPage(board *[][]int){
@@ -72,10 +101,10 @@ templ MainPage(board *[][]int){
         @head()
         <body class={base()}>
             <center>@header()</center>
-            <br>
             <center>
-                @DrawBoard(board, false)
+                <div id="game-board" style="display: flex; flex-wrap: wrap; width: calc(7 * (104px + 4px)); justify-content: center; align-items: center;"></div>
             </center>
+            @webSocket()
         </body>
     </html>
 }

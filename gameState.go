@@ -15,7 +15,9 @@ func (gs *gameState) initBoard() {
 func (gs *gameState) reset(w http.ResponseWriter, r *http.Request) {
 	gs.initBoard()
 	gs.currentPlayer = 1
+	gs.gameOver = false
 	DrawBoard(&gs.board, false).Render(r.Context(), w)
+	BroadcastBoardRefresh()
 }
 
 func (gs *gameState) makeMove(w http.ResponseWriter, r *http.Request) {
@@ -45,12 +47,18 @@ func (gs *gameState) makeMove(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if gs.checkWin() {
+		gs.gameOver = true
+		gs.winner = gs.currentPlayer
 		GameOver(&gs.board, gs.currentPlayer).Render(r.Context(), w)
+		BroadcastBoardRefresh()
 		return
 	}
 
 	if gs.boardFull() {
+		gs.gameOver = true
+		gs.winner = 0
 		GameOver(&gs.board, 0).Render(r.Context(), w)
+		BroadcastBoardRefresh()
 		return
 	}
 
@@ -61,6 +69,7 @@ func (gs *gameState) makeMove(w http.ResponseWriter, r *http.Request) {
 	}
 
 	DrawBoard(&gs.board, false).Render(r.Context(), w)
+	BroadcastBoardRefresh()
 }
 
 func (gs *gameState) checkWin() bool {
@@ -98,6 +107,14 @@ func (gs *gameState) checkWin() bool {
 		}
 	}
 	return false
+}
+
+func (gs *gameState) handleGetRefresh(w http.ResponseWriter, r *http.Request) {
+	if gs.gameOver {
+		GameOver(&gs.board, gs.winner).Render(r.Context(), w)
+	} else {
+		DrawBoard(&gs.board, false).Render(r.Context(), w)
+	}
 }
 
 func (gs *gameState) boardFull() bool {

@@ -11,6 +11,8 @@ type gameState struct {
 	cols          int64
 	board         [][]int
 	currentPlayer int
+	gameOver      bool
+	winner        int
 }
 
 func main() {
@@ -20,6 +22,7 @@ func main() {
 		rows:          6,
 		cols:          7,
 		currentPlayer: 1,
+		gameOver:      false,
 	}
 
 	gs.initBoard()
@@ -27,6 +30,10 @@ func main() {
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		MainPage(&gs.board).Render(r.Context(), w)
 	})
+
+	mux.HandleFunc("/get-refresh", gs.handleGetRefresh)
+
+	mux.HandleFunc("/ws", handleWebSocket)
 
 	mux.HandleFunc("POST /move/{col}", gs.makeMove)
 	mux.HandleFunc("POST /reset", gs.reset)
