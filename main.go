@@ -29,6 +29,7 @@ func main() {
 	})
 
 	mux.HandleFunc("POST /move/{row}/{col}", gs.makeMove)
+	mux.HandleFunc("POST /reset", gs.reset)
 
 	fs := http.FileServer(http.Dir("static"))
 	mux.Handle("/static/", http.StripPrefix("/static/", fs))

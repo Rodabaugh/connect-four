@@ -31,7 +31,7 @@ templ header(){
     </div>
 }
 
-templ DrawBoard(board *[][]int){
+templ DrawBoard(board *[][]int, gameOver bool){
     <div id="game-board" style="display: flex; flex-wrap: wrap; width: calc(7 * (104px + 4px)); justify-content: center; align-items: center;">
     for row_id, row := range *board {
 		for cell_id, cell := range row {
@@ -42,12 +42,23 @@ templ DrawBoard(board *[][]int){
                 case 2:
                     <img src="static/pine.svg" width="100" height="100">
                 default:
-                    <img src="static/empty.svg" width="100" height="100" hx-post={"/move/" + strconv.Itoa(row_id) + "/" + strconv.Itoa(cell_id) } hx-target="#game-board">
+                    if gameOver {
+                        <img src="static/empty.svg" width="100" height="100">
+                    } else {
+                        <img src="static/empty.svg" width="100" height="100" hx-post={"/move/" + strconv.Itoa(row_id) + "/" + strconv.Itoa(cell_id) } hx-target="#game-board">
+                    }
             }
             </div>
 		}
-        </br>
 	}
+    </div>
+}
+
+templ GameOver(board *[][]int, winner int){
+    @DrawBoard(board, true)
+    <div>
+        <h2>Player {strconv.Itoa(winner)} wins!</h2>
+        <button hx-post={"/reset"} hx-target="#game-board">Reset</button>
     </div>
 }
 
@@ -59,7 +70,7 @@ templ MainPage(board *[][]int){
             <center>@header()</center>
             <br>
             <center>
-                @DrawBoard(board)
+                @DrawBoard(board, false)
             </center>
         </body>
     </html>
